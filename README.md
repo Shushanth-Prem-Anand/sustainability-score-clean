@@ -179,8 +179,8 @@ Render will automatically build and deploy the app!
 ## 🙋‍♂️ Author
 
 **Shushanth**
-📧 Email: [your-email@example.com](mailto:your-email@example.com)
-🔗 LinkedIn: [linkedin.com/in/yourname](https://linkedin.com/in/yourname)
+📧 Email: [shushanth03@gmail.com](mailto:shushanth03@gmail.com)
+🔗 LinkedIn: [[linkedin.com/in/yourname](https://www.linkedin.com/in/shushanth-prem-anand-6a784b25b/)]([https://linkedin.com/in/yourname](https://www.linkedin.com/in/shushanth-prem-anand-6a784b25b/))
 
 ---
 
@@ -202,3 +202,4 @@ This project is licensed under the [MIT License](LICENSE).
 ## ✨ Live App
 
 👉 [https://sustainability-score-clean.onrender.com](https://sustainability-score-clean.onrender.com)
+
