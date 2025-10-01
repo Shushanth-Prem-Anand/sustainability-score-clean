@@ -7,7 +7,7 @@ import openai
 
 # Load environment variables (for OpenAI key)
 load_dotenv()
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+openai.api_key = os.getenv("OPENAI_API_KEY")  # ✅ Use old-style auth (compatible with Render)
 
 app = Flask(__name__)
 CORS(app)  # Allow frontend to connect to backend
@@ -25,10 +25,6 @@ DEFAULT_WEIGHTS = {
 # ---------- HELPER FUNCTIONS ----------
 
 def calculate_score(data):
-    """
-    Compute sustainability score based on GWP, Circularity, Cost
-    using either provided weights from frontend or defaults.
-    """
     try:
         gwp = float(data["gwp"])
         circularity = float(data["circularity"])
@@ -36,12 +32,10 @@ def calculate_score(data):
     except ValueError:
         return None, "Invalid format for gwp, circularity, or cost."
 
-    # Get weights from frontend or fallback to defaults
     weight_gwp = float(data.get("weight_gwp", DEFAULT_WEIGHTS["gwp"]))
     weight_circularity = float(data.get("weight_circularity", DEFAULT_WEIGHTS["circularity"]))
     weight_cost = float(data.get("weight_cost", DEFAULT_WEIGHTS["cost"]))
 
-    # Normalize weights (to sum=1)
     total_weight = weight_gwp + weight_circularity + weight_cost
     if total_weight == 0:
         weight_gwp, weight_circularity, weight_cost = DEFAULT_WEIGHTS.values()
@@ -51,7 +45,6 @@ def calculate_score(data):
     weight_circularity /= total_weight
     weight_cost /= total_weight
 
-    # Normalize scores (0–100 scale)
     gwp_score = max(0, 100 - gwp * 10)           # lower GWP is better
     circularity_score = circularity              # already 0–100
     cost_score = max(0, 100 - cost * 5)          # cheaper is better
@@ -75,9 +68,6 @@ def assign_rating(score):
         return "D"
 
 def generate_ai_suggestions(data):
-    """
-    Uses OpenAI GPT to generate actionable sustainability suggestions.
-    """
     system_prompt = (
         "You are a sustainability expert. Given product attributes such as materials used, "
         "transport method, packaging, global warming potential (GWP), cost, and circularity, "
@@ -98,7 +88,7 @@ Circularity: {data.get("circularity", "unknown")}
 """
 
     try:
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -107,7 +97,7 @@ Circularity: {data.get("circularity", "unknown")}
             temperature=0.7,
             max_tokens=150
         )
-        output = response.choices[0].message.content
+        output = response.choices[0].message["content"]
         suggestions = [line.strip("-• ").strip() for line in output.strip().split("\n") if line.strip()]
         return suggestions
     except Exception as e:
@@ -131,8 +121,6 @@ def score():
         return jsonify({"error": error}), 400
 
     rating = assign_rating(score_value)
-
-    # AI-powered suggestions
     suggestions = generate_ai_suggestions(data)
 
     result = {
@@ -142,7 +130,6 @@ def score():
         "suggestions": suggestions
     }
 
-    # For summary we can still extract some issues heuristically (keywords)
     issues_for_summary = []
     if "air" in data.get("transport", "").lower():
         issues_for_summary.append("Air transport")
@@ -182,7 +169,6 @@ def score_summary():
         for issue in s["issues"]:
             issues[issue] = issues.get(issue, 0) + 1
 
-    # Sort issues by frequency
     sorted_issues = sorted(issues.items(), key=lambda x: x[1], reverse=True)
     issue_labels = [item[0] for item in sorted_issues[:5]]
     issue_counts = [item[1] for item in sorted_issues[:5]]
@@ -195,8 +181,6 @@ def score_summary():
         "issue_counts": issue_counts
     })
 
-# ---------- FRONTEND ROUTE ----------
-
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -204,4 +188,3 @@ def home():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=False, host="0.0.0.0", port=port)
-    #app.run(debug=True)
