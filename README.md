@@ -6,6 +6,8 @@ This project was developed as part of an interview case study for **Vrtta**, a c
 
 The system evaluates environmental impact across multiple dimensions (carbon footprint, circularity, cost), and also includes dynamic visualizations and an AI-based suggestion engine powered by OpenAI GPT.
 
+PLEASE NOTE THAT THIS ENTIRE PROJECT WAS **VIBE-CODED** IN *4 HOURS*
+
 ---
 
 ## ✅ Features
@@ -180,7 +182,7 @@ Render will automatically build and deploy the app!
 
 **Shushanth**
 📧 Email: [shushanth03@gmail.com](mailto:shushanth03@gmail.com)
-🔗 LinkedIn: [[linkedin.com/in/yourname](https://www.linkedin.com/in/shushanth-prem-anand-6a784b25b/)]([https://linkedin.com/in/yourname](https://www.linkedin.com/in/shushanth-prem-anand-6a784b25b/))
+🔗 LinkedIn: [https://www.linkedin.com/in/shushanth-prem-anand-6a784b25b/](https://www.linkedin.com/in/shushanth-prem-anand-6a784b25b/)
 
 ---
 
