@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sustainability Score Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .card {
+      border-radius: 10px;
+    }
+    .container-fluid {
+      max-width: 1600px;
+    }
+    @media (min-width: 1400px) {
+      .container-fluid {
+        padding: 0 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid mt-4">
+    <h2 class="mb-4">🌱 Sustainability Score Checker</h2>
+
+    <!-- Product Input Form -->
+    <div class="card p-4 shadow-sm mb-4">
+      <form id="productForm">
+        <h5 class="mb-3">🔍 Product Information</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <input type="text" name="product_name" class="form-control" placeholder="Product Name" required>
+          </div>
+          <div class="col-md-6">
+            <input type="text" name="materials" class="form-control" placeholder="Materials (comma separated)" required>
+          </div>
+          <div class="col-md-4">
+            <input type="number" name="weight_grams" class="form-control" placeholder="Weight (grams)" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" name="transport" class="form-control" placeholder="Transport Method" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" name="packaging" class="form-control" placeholder="Packaging Type" required>
+          </div>
+          <div class="col-md-4">
+            <input type="number" step="any" name="gwp" class="form-control" placeholder="Global Warming Potential (GWP)" required>
+          </div>
+          <div class="col-md-4">
+            <input type="number" step="any" name="cost" class="form-control" placeholder="Cost" required>
+          </div>
+          <div class="col-md-4">
+            <input type="number" name="circularity" class="form-control" placeholder="Circularity (%)" required>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <h5 class="mb-3">⚖️ Weighting Factors</h5>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label>Weight for GWP</label>
+            <input type="number" name="weight_gwp" class="form-control" value="0.4" step="0.1" required>
+          </div>
+          <div class="col-md-4">
+            <label>Weight for Circularity</label>
+            <input type="number" name="weight_circularity" class="form-control" value="0.4" step="0.1" required>
+          </div>
+          <div class="col-md-4">
+            <label>Weight for Cost</label>
+            <input type="number" name="weight_cost" class="form-control" value="0.2" step="0.1" required>
+          </div>
+        </div>
+
+        <div class="mt-4 text-end">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Output Section -->
+    <div class="card p-4 shadow-sm mb-4">
+      <h4 id="score" class="text-primary mb-2"></h4>
+      <h5 id="rating" class="text-secondary mb-3"></h5>
+
+      <h6 class="fw-bold mb-2">🧠 AI Suggestions:</h6>
+      <ul id="suggestions" class="list-group mb-3"></ul>
+    </div>
+
+    <!-- Charts + History Row -->
+    <div class="row g-4">
+      <!-- Charts Column -->
+      <div class="col-lg-8">
+        <div class="card p-3 shadow-sm mb-4">
+          <h5 class="mb-3">📊 Rating Summary (All Products)</h5>
+          <canvas id="barChart"></canvas>
+        </div>
+        <div class="card p-3 shadow-sm">
+          <h5 class="mb-3">🚨 Top Sustainability Issues</h5>
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Product History Column -->
+      <div class="col-lg-4">
+        <div class="card p-4 shadow-sm h-100">
+          <h5 class="mb-3">🕘 Product History</h5>
+          <ul id="historyList" class="list-group"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
